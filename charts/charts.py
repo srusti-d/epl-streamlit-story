@@ -93,7 +93,7 @@ def chart_referee_penalties(szn_2425_df: pd.DataFrame, melted_df: pd.DataFrame) 
             alt.Color('mean(total_penalties):Q', legend=None)
         ),
         opacity=alt.condition(ref_brush, alt.value(1.0), alt.value(0.5))
-    ).add_params(ref_brush).properties(width=250, title="EPL Referees Penalties Ranking (2024-25)")
+    ).add_params(ref_brush).properties(width=250, height = 350, title="EPL Referees Penalties Ranking (2024-25)")
 
     match_plot = alt.Chart(szn_2425_df).mark_circle(size=60).encode(
         x=alt.X('total_fouls:Q', title='# of Fouls'),
@@ -118,6 +118,6 @@ def chart_referee_penalties(szn_2425_df: pd.DataFrame, melted_df: pd.DataFrame) 
                         sort=['Home Team', 'Away Team'],
                         scale=alt.Scale(domain=['Home Team', 'Away Team'], range=['blue', 'red']),
                         legend=alt.Legend(title='Team'))
-    ).properties(width=200, height=400, title='Selected Match Penalty Breakdown')
+    ).properties(width=200, height=350, title='Selected Match Penalty Breakdown')
 
     return (ref_chart | match_plot | penalty_plot).resolve_scale(x='shared')
