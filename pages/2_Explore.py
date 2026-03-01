@@ -1,23 +1,31 @@
 import streamlit as st
-from utils.io import load_weather
-from charts.charts import chart_dashboard, chart_temp_diff_wind
+from utils.io import load_data
+from charts.charts import chart_home_away_wins, chart_red_cards_wins, chart_referee_penalties
+
 
 st.set_page_config(page_title="Explore", layout="wide")
-df = load_weather()
+both_szns_df, szn_2425_df, teams_rcards_df, teams_wins_df, melted_df = load_data() 
 
 st.title("Interactive Exploratory View")
-st.write("Use interaction to validate and extend the story—focus on one weather type, then zoom into a time window.")
+st.write("Use interaction to zoom and select highlight team-specific and season-specific patterns.")
 
-st.altair_chart(chart_dashboard(df), use_container_width=True)
-
+st.header("Home & Away Wins by Season")
+st.write("Switch between seasons and select a team to follow their home and away win trajectory month by month.")
+st.altair_chart(chart_home_away_wins(both_szns_df), use_container_width=True)
 st.markdown("**Guided prompts:**")
-st.write("- Filter to one weather type (e.g., `sun`, `rain`)—does the temperature distribution shift?")
-st.write("- Brush a specific year—do extremes cluster in particular periods?")
-st.write("- Compare histogram shape across weather types—what changes most: center, spread, or tails?")
+st.write("- Does your selected team perform better at home or away? Does this change between seasons?")
+st.write("- Which teams show the biggest home/away performance gap?")
 
-st.header("Exercise 7: Extreme daily temperature differences by weather type")
-st.write("We wish to see whether, for each weather type, do more extreme temperature differences correlate with levels of wind and precipitation? Select a specific time range and a weather type to examine corresponding wind and precipitation differences.")
-st.altair_chart(chart_temp_diff_wind(df), use_container_width=True)
-st.caption("Takeaway: Across weather types, there is primarily low precipitation (with the exception of rain and drizzle, of course). " \
-"Wind speeds are generally low to moderate. However, wind speeds increase in the later months of a year, more evident under snowy and rainy conditions.")
+st.header("Red Cards vs Wins (2024-25)")
+st.write("Brush over teams in the bar chart to highlight their win trajectory in the line chart.")
+st.altair_chart(chart_red_cards_wins(teams_rcards_df, teams_wins_df), use_container_width=True)
+st.markdown("**Guided prompts:**")
+st.write("- Do the most disciplined teams consistently win more?")
+st.write("- Are there any surprising outliers — high cards but high wins, or vice versa?")
 
+st.header("Referee & Match Penalty Explorer (2024-25)")
+st.write("Brush referees to filter the scatter plot by matches refereed by the selected individual, then click a match to inspect its penalty breakdown by home and away team.")
+st.altair_chart(chart_referee_penalties(szn_2425_df, melted_df), use_container_width=True)
+st.markdown("**Guided prompts:**")
+st.write("- Which referee awards the most penalties on average?")
+st.write("- Do high-foul matches always result in more cards, or does it vary by referee?")
