@@ -81,7 +81,7 @@ def chart_red_cards_wins(teams_rcards_df: pd.DataFrame, teams_wins_df: pd.DataFr
 
 def chart_referee_penalties(szn_2425_df: pd.DataFrame, melted_df: pd.DataFrame) -> alt.Chart:
     ref_brush = alt.selection_interval(encodings=['y'])
-    point_select = alt.selection_point(fields=['match_id'], empty='none')
+    point_select = alt.selection_point(fields=['match_id'], empty='none', name='pointSelect')
     max_count = int(szn_2425_df[['HF', 'AF', 'HY', 'AY', 'HR', 'AR']].max().max())
 
     ref_chart = alt.Chart(szn_2425_df).mark_bar().encode(
