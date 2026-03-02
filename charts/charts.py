@@ -108,7 +108,7 @@ def chart_referee_penalties(szn_2425_df: pd.DataFrame, melted_df: pd.DataFrame) 
         width=250, height=400, title="Fouls and Cards at Match-Level"
     )
 
-    penalty_plot = alt.Chart(melted_df).transform_filter(point_select).mark_bar().encode(
+    penalty_plot = alt.Chart(melted_df).transform_filter(point_select).transform_filter("length(data('pointSelect_store')) > 0").mark_bar().encode(
         x=alt.X('Category:N', sort=['Foul', 'Yellow Card', 'Red Card'], title="Type of Penalty"),
         xOffset=alt.XOffset('Team:N', sort=['Home Team', 'Away Team']),
         y=alt.Y('Count:Q', title='Count',
