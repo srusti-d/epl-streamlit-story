@@ -71,7 +71,7 @@ def chart_red_cards_wins(teams_rcards_df: pd.DataFrame, teams_wins_df: pd.DataFr
             alt.Tooltip('team', title='Team'),
             alt.Tooltip('TotalWinCount', title='Total Wins in Season So Far')
         ]
-    ).properties(title="Team Wins Throughout Season", width=500, height=300)
+    ).properties(title="Team Wins Throughout Season", width=500, height=400)
 
     return alt.hconcat(bar_chart, line_chart).properties(
         spacing=5,
@@ -105,7 +105,7 @@ def chart_referee_penalties(szn_2425_df: pd.DataFrame, melted_df: pd.DataFrame) 
             alt.Tooltip('Referee')
         ]
     ).add_params(point_select).transform_filter(ref_brush).properties(
-        width=250, height=350, title="Fouls and Cards at Match-Level"
+        width=250, height=400, title="Fouls and Cards at Match-Level"
     )
 
     penalty_plot = alt.Chart(melted_df).transform_filter(point_select).mark_bar().encode(
@@ -118,6 +118,6 @@ def chart_referee_penalties(szn_2425_df: pd.DataFrame, melted_df: pd.DataFrame) 
                         sort=['Home Team', 'Away Team'],
                         scale=alt.Scale(domain=['Home Team', 'Away Team'], range=['blue', 'red']),
                         legend=alt.Legend(title='Team'))
-    ).properties(width=250, height=350, title='Selected Match Penalty Breakdown')
+    ).properties(width=250, height=400, title='Selected Match Penalty Breakdown')
 
     return (ref_chart | match_plot | penalty_plot).resolve_scale(x='independent')
